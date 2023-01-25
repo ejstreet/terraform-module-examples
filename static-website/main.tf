@@ -25,6 +25,8 @@ resource "aws_s3_bucket_website_configuration" "site" {
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
+  provider = aws.global
+
   origin {
     connection_attempts = 3
     connection_timeout  = 10
@@ -43,9 +45,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
+  aliases = [var.custom_domain_name]
+
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "Some comment"
   default_root_object = var.index_document
 
   # logging_config {
@@ -76,18 +79,21 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  price_class = "PriceClass_100"
+  price_class = var.price_class
 
   restrictions {
     geo_restriction {
-      restriction_type = "none" #"whitelist"
-      locations        = []     #["US", "CA", "GB", "DE"]
+      restriction_type = var.geo_restriction.restriction_type
+      locations        = var.geo_restriction.locations
     }
   }
 
-  #tags = var.cloudfront_tags
+  tags = var.cloudfront_tags
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    cloudfront_default_certificate = var.custom_domain_name == null
+    acm_certificate_arn            = var.custom_domain_name != null ? aws_acm_certificate.cert[0].arn : null
+    minimum_protocol_version       = "TLSv1.2_2021"
+    ssl_support_method             = var.custom_domain_name != null ? "sni-only" : null
   }
 }
