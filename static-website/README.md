@@ -1,10 +1,18 @@
 # Static Website
 This module deploys an S3 bucket and Cloudfront CDN, with the option of using a custom domain complete with TLS, in order to deploy a website.
 
-The only required variables are the AWS `region` where the bucket will be deployed, and the unique `bucket_name`.
+The only required variables are the AWS `region` where the bucket will be deployed, and the unique `bucket_name`. This bucket will then be accessible via cloudfront at the `cloudfront_distribution_domain_name` given as output.
 
-The variable `custom_domain_name` can be passed to the module to deploy the resources required to support it. The module will create a hosted zone, or if one already exists, then records can be deployed there by setting `create_hosted_zone` to `false`.
+The variable `custom_domain_name` can be passed to the module to deploy the resources required to support it. The module will create a hosted zone, or if one already exists, then records can be deployed there by setting `create_hosted_zone` to `false`. The module will provide a `name_servers` output to configure your domain name provider.
 
+## Uploading to the bucket
+The site files can be uploaded to S3 bucket using the AWSCLI. If the site is updated often, it is recommended to use `--cache-control` headers on the `index.html` to either disable or set a short cache duration.
+
+This can be done using the following commands:
+```bash
+aws s3 sync index.html s3://yourbucket/ --cache-control max-age=60
+aws s3 sync /path s3://yourbucket/ --cache-control max-age=604800 --recursive --exclude index.html
+```
 
 # Module details
 
