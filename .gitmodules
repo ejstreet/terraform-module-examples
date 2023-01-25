@@ -1,3 +1,4 @@
 [submodule "eks-cluster"]
 	path = eks-cluster
 	url = git@github.com:ejstreet/eks-cluster.git
+	branch = main
