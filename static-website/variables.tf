@@ -21,7 +21,7 @@ variable "bucket_name" {
   description = "The name of the S3 bucket where the site assets will be stored."
 }
 
-variable "default_tags" {
+variable "tags_default" {
   type = map(string)
   default = {
     "Terraform" = "True"
@@ -29,18 +29,18 @@ variable "default_tags" {
   description = "Tags to apply to all resources in this module."
 }
 
-variable "bucket_tags" {
+variable "tags_bucket" {
   type        = map(string)
   default     = {}
   description = "Tags to apply to the S3 bucket created by this module."
 }
 
-variable "cloudfront_tags" {
+variable "tags_cloudfront" {
   type    = map(string)
   default = {}
 }
 
-variable "route53_tags" {
+variable "tags_route53" {
   type    = map(string)
   default = {}
 }
@@ -61,6 +61,29 @@ variable "price_class" {
   description = <<EOF
     The price class for this distribution. One of "PriceClass_All", "PriceClass_200", "PriceClass_100".
     See [cloudfront docs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PriceClass.html) for further details."
+  EOF
+}
+
+variable "default_cache_allowed_methods" {
+  type        =  list(string)
+  default     = ["GET", "HEAD"]
+  description = <<EOF
+    Supported lists are:
+    - ["GET", "HEAD"]
+    - ["GET", "HEAD", "OPTIONS"]
+    - ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    See [cloudfront docs](https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_AllowedMethods.html) for further details.
+  EOF
+}
+
+variable "default_cache_cached_methods" {
+  type        = list(string)
+  default     = ["GET", "HEAD"]
+  description = <<EOF
+    Supported lists are:
+    - ["GET", "HEAD"]
+    - ["GET", "HEAD", "OPTIONS"]
+    See [cloudfront docs](https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachedMethods.html) for further details.
   EOF
 }
 
