@@ -11,7 +11,7 @@ resource "aws_route53_zone" "site" {
 
   name = var.custom_domain_name
 
-  tags = var.route53_tags
+  tags = var.tags_route53
 }
 
 locals {

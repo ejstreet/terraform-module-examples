@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "site" {
 
   tags = merge(
     { Name = var.bucket_name },
-    var.bucket_tags
+    var.tags_bucket
   )
 }
 
@@ -51,17 +51,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   is_ipv6_enabled     = true
   default_root_object = var.index_document
 
-  # logging_config {
-  #   include_cookies = false
-  #   bucket          = "mylogs.s3.amazonaws.com"
-  #   prefix          = "myprefix"
-  # }
-
-  #aliases = var.aliases
-
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"] #["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
+    allowed_methods  = var.default_cache_allowed_methods #["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods   = var.default_cache_cached_methods # ["GET", "HEAD"]
     target_origin_id = aws_s3_bucket.site.id
 
     viewer_protocol_policy = "redirect-to-https"
@@ -88,7 +80,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  tags = var.cloudfront_tags
+  tags = var.tags_cloudfront
 
   viewer_certificate {
     cloudfront_default_certificate = var.custom_domain_name == null

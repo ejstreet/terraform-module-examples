@@ -3,7 +3,7 @@ output "s3_bucket_id" {
 }
 
 output "s3_bucket_endpoint" {
-  value = aws_s3_bucket_website_configuration.site.bucket_domain_name
+  value = aws_s3_bucket.site.bucket_domain_name
 }
 
 output "s3_bucket_website_endpoint" {
