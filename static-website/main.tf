@@ -52,8 +52,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_root_object = var.index_document
 
   default_cache_behavior {
-    allowed_methods  = var.default_cache_allowed_methods #["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = var.default_cache_cached_methods  # ["GET", "HEAD"]
+    allowed_methods  = var.default_cache_allowed_methods
+    cached_methods   = var.default_cache_cached_methods
     target_origin_id = aws_s3_bucket.site.id
 
     viewer_protocol_policy = "redirect-to-https"
