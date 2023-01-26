@@ -1,37 +1,18 @@
+locals {
+  is_custom_domain = var.custom_domain_name != null ? 1 : 0
+}
+
 data "aws_route53_zone" "site" {
   provider = aws.global
-  count    = var.custom_domain_name != null && !var.create_hosted_zone ? 1 : 0
-
-  name = var.custom_domain_name
-}
-
-resource "aws_route53_zone" "site" {
-  provider = aws.global
-  count    = var.custom_domain_name != null && var.create_hosted_zone ? 1 : 0
-
-  name = var.custom_domain_name
-
-  tags = var.tags_route53
-}
-
-locals {
-  hosted_zone_id = try(
-    aws_route53_zone.site[0].zone_id,
-    data.aws_route53_zone.site[0].zone_id,
-    null
-  )
-  name_servers = try(
-    aws_route53_zone.site[0].name_servers,
-    data.aws_route53_zone.site[0].name_servers,
-    null
-  )
+  count    = local.is_custom_domain
+  name     = var.custom_domain_name
 }
 
 resource "aws_route53_record" "site_A" {
   provider = aws.global
-  count    = var.custom_domain_name != null ? 1 : 0
+  count    = local.is_custom_domain
 
-  zone_id = local.hosted_zone_id
+  zone_id = data.aws_route53_zone.site[0].zone_id
   name    = var.custom_domain_name
   type    = "A"
 
@@ -44,7 +25,7 @@ resource "aws_route53_record" "site_A" {
 
 resource "aws_acm_certificate" "cert" {
   provider = aws.global
-  count    = var.custom_domain_name != null ? 1 : 0
+  count    = local.is_custom_domain
 
   domain_name               = var.custom_domain_name
   subject_alternative_names = ["*.${var.custom_domain_name}"]
@@ -77,12 +58,12 @@ resource "aws_route53_record" "cert_validation" {
   records = [each.value.record]
   ttl     = 60
   type    = each.value.type
-  zone_id = local.hosted_zone_id
+  zone_id = data.aws_route53_zone.site[0].zone_id
 }
 
 resource "aws_acm_certificate_validation" "cert" {
   provider = aws.global
-  count    = var.custom_domain_name != null ? 1 : 0
+  count    = local.is_custom_domain
 
   certificate_arn         = aws_acm_certificate.cert[0].arn
   validation_record_fqdns = [for record in aws_route53_record.cert_validation : record.fqdn]

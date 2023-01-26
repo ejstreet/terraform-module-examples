@@ -3,7 +3,10 @@ This module deploys an S3 bucket and Cloudfront CDN, with the option of using a 
 
 The only required variables are the AWS `region` where the bucket will be deployed, and the unique `bucket_name`. This bucket will then be accessible via cloudfront at the `cloudfront_distribution_domain_name` given as output.
 
-The variable `custom_domain_name` can be passed to the module to deploy the resources required to support it. The module will create a hosted zone, or if one already exists, then records can be deployed there by setting `create_hosted_zone` to `false`. The module will provide a `name_servers` output to configure your domain name provider.
+## Custom Domain Name
+ To use a custom domain, the [Route53 hosted zone](https://us-east-1.console.aws.amazon.com/route53/v2/hostedzones#) and domain must be configured before running the module. Once the hosted zone has been created, the name servers must be entered into the domain provider (this can be outside of AWS).
+
+ The variable `custom_domain_name` can then be passed to the module to deploy the remaining resources required to support it.
 
 ## Uploading to the bucket
 The site files can be uploaded to S3 bucket using the AWSCLI. If the site is updated often, it is recommended to use `--cache-control` headers on the `index.html` to either disable or set a short cache duration.

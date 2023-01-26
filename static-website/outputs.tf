@@ -26,9 +26,7 @@ output "domain_name" {
   value = var.custom_domain_name
 }
 
-output "name_servers" {
-  value = local.name_servers
-}
+
 output "next_steps" {
   value = var.custom_domain_name != null ? "Use the above name servers to point the domain at the distribution." : null
 }

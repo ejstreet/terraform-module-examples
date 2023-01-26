@@ -45,7 +45,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  aliases = [var.custom_domain_name]
+  aliases = var.custom_domain_name != null ? [var.custom_domain_name] : []
 
   enabled             = true
   is_ipv6_enabled     = true
@@ -53,7 +53,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   default_cache_behavior {
     allowed_methods  = var.default_cache_allowed_methods #["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = var.default_cache_cached_methods # ["GET", "HEAD"]
+    cached_methods   = var.default_cache_cached_methods  # ["GET", "HEAD"]
     target_origin_id = aws_s3_bucket.site.id
 
     viewer_protocol_policy = "redirect-to-https"

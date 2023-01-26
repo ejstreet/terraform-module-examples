@@ -10,12 +10,6 @@ variable "custom_domain_name" {
 
 }
 
-variable "create_hosted_zone" {
-  type        = bool
-  default     = true
-  description = "Set to true to create a hosted zone based on the custom domain name. False will use an existing zone as a data source."
-}
-
 variable "bucket_name" {
   type        = string
   description = "The name of the S3 bucket where the site assets will be stored."
@@ -65,7 +59,7 @@ variable "price_class" {
 }
 
 variable "default_cache_allowed_methods" {
-  type        =  list(string)
+  type        = list(string)
   default     = ["GET", "HEAD"]
   description = <<EOF
     Supported lists are:
