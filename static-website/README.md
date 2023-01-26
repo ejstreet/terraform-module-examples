@@ -45,7 +45,6 @@ No modules.
 | [aws_cloudfront_distribution.s3_distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_route53_record.cert_validation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_route53_record.site_A](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
-| [aws_route53_zone.site](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_s3_bucket.site](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_acl.site](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl) | resource |
 | [aws_s3_bucket_website_configuration.site](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_website_configuration) | resource |
@@ -56,7 +55,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | The name of the S3 bucket where the site assets will be stored. | `string` | n/a | yes |
-| <a name="input_create_hosted_zone"></a> [create\_hosted\_zone](#input\_create\_hosted\_zone) | Set to true to create a hosted zone based on the custom domain name. False will use an existing zone as a data source. | `bool` | `true` | no |
 | <a name="input_custom_domain_name"></a> [custom\_domain\_name](#input\_custom\_domain\_name) | Custom domain to use. Leave unset to use cloudfront domain only. | `string` | `null` | no |
 | <a name="input_default_cache_allowed_methods"></a> [default\_cache\_allowed\_methods](#input\_default\_cache\_allowed\_methods) | Supported lists are:<br>    - ["GET", "HEAD"]<br>    - ["GET", "HEAD", "OPTIONS"]<br>    - ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]<br>    See [cloudfront docs](https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_AllowedMethods.html) for further details. | `list(string)` | <pre>[<br>  "GET",<br>  "HEAD"<br>]</pre> | no |
 | <a name="input_default_cache_cached_methods"></a> [default\_cache\_cached\_methods](#input\_default\_cache\_cached\_methods) | Supported lists are:<br>    - ["GET", "HEAD"]<br>    - ["GET", "HEAD", "OPTIONS"]<br>    See [cloudfront docs](https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachedMethods.html) for further details. | `list(string)` | <pre>[<br>  "GET",<br>  "HEAD"<br>]</pre> | no |
@@ -78,7 +76,6 @@ No modules.
 | <a name="output_cloudfront_distribution_hosted_zone"></a> [cloudfront\_distribution\_hosted\_zone](#output\_cloudfront\_distribution\_hosted\_zone) | n/a |
 | <a name="output_cloudfront_distribution_id"></a> [cloudfront\_distribution\_id](#output\_cloudfront\_distribution\_id) | n/a |
 | <a name="output_domain_name"></a> [domain\_name](#output\_domain\_name) | n/a |
-| <a name="output_name_servers"></a> [name\_servers](#output\_name\_servers) | n/a |
 | <a name="output_next_steps"></a> [next\_steps](#output\_next\_steps) | n/a |
 | <a name="output_s3_bucket_endpoint"></a> [s3\_bucket\_endpoint](#output\_s3\_bucket\_endpoint) | n/a |
 | <a name="output_s3_bucket_id"></a> [s3\_bucket\_id](#output\_s3\_bucket\_id) | n/a |
